@@ -31,4 +31,7 @@ In altre parole, progetta opportunamente un numero di tabelle e di relazioni tra
 
 ### PROGETTAZIONE LOGICA E CONCETTUALE DELLA BASE DATI:
 
-...      .. image:: 
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/main/Modello%20ER%20-%20Progettazione%20Concettuale.JPG?raw=True)
+
+
+
