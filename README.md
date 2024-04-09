@@ -39,3 +39,4 @@ In altre parole, progetta opportunamente un numero di tabelle e di relazioni tra
 
 ![alt text](https://github.com/simonepetrini/OLTP_project/blob/main/Progettazione%20Logica.png?raw=True)
 
+### IMPLEMENTAZIONE FISICA DELLE TABELLE (TRAMITE IL DBMS SQL SERVER):
