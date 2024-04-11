@@ -328,7 +328,7 @@ ORDER BY S1.ProductKey
 
 Costruzione di un report per l'analisi delle vendite in Excel tramite l'implementazione di un modello logico in PowerQuery.
 
-1)	Costruzione di una vista sui prodotti in modo tale da esporre una “versione denormalizzata” delle informazioni utili (codice prodotto, nome prodotto, nome categoria)
+#### 1)	Costruzione di una vista sui prodotti in modo tale da esporre una “versione denormalizzata” delle informazioni utili (codice prodotto, nome prodotto, nome categoria)
 
 ```sql
 CREATE VIEW VW_SP_Products AS
@@ -339,7 +339,7 @@ ON P.ProductCategoryID = C.ProductCategoryID
 ```
 ![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/View1.png?raw=True)
 
-2)	Costruzione di una vista per ottenere una “versione denormalizzata” delle informazioni geografiche
+#### 2)	Costruzione di una vista per ottenere una “versione denormalizzata” delle informazioni geografiche
 
 ```sql
 CREATE VIEW VW_SP_States AS
@@ -349,3 +349,10 @@ JOIN REGIONS AS R
 ON S.RegionID = R.RegionID
 ```
 ![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/View2.png?raw=True)
+
+#### 3)	Implementazione del modello logico in PowerQuery
+
+Importo la tabella dei fatti e le due view precedentemente create in PowerQuery
+
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/PowerQuery1.png?raw=True)
+
