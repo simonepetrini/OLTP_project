@@ -232,34 +232,120 @@ SELECT StateID FROM STATES GROUP BY StateID HAVING COUNT(*)>1;
 - Esporre l’elenco delle transazioni indicando nel result set il codice documento, la data, il nome del prodotto, la categoria del prodotto, il nome dello stato, il nome della regione di vendita e un campo che indichi che siano passati più di 180 giorni dalla data vendita o meno
 
 ```sql
+--- In merito all'ultima richiesta ho creato un campo booleano in relazione al periodo trascorso dalla data di vendita (>180 -> True, <= 180 -> False) ---
+SELECT S.OrderNumber,S.OrderLine,S.OrderDate,P.ProductName,C.ProductCategoryName,ST.StateName,R.RegionArea,
+CASE WHEN DATEDIFF(d,s.orderdate,GETDATE())>180 THEN 'True' ELSE 'False' END AS 'Sold Before This Semester'
+FROM SALES AS S
+JOIN PRODUCT AS P ON S.ProductKey = P.ProductKey
+JOIN PRODUCT_CATEGORY AS C ON P.ProductCategoryID = C.ProductCategoryID
+JOIN STATES AS ST ON S.SalesStateID = ST.StateID
+JOIN REGIONS AS R ON ST.RegionID = R.RegionID
 ```
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/Query2.png?raw=True)
 
 - Esporre l’elenco dei soli prodotti venduti e per ognuno di questi il fatturato totale per anno
 
 ```sql
+SELECT P.ProductKey, P.ProductName, SUM(S.SalesAmount) AS TotalSales, YEAR(S.OrderDate) AS SalesYear
+FROM SALES AS S
+JOIN PRODUCT AS P
+ON S.ProductKey = P.ProductKey
+GROUP BY P.ProductKey, P.ProductName, YEAR(S.OrderDate)
+ORDER BY P.ProductKey, SalesYear
 ```
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/Query3.png?raw=True)
 
 - Esporre il fatturato totale per stato per anno
 
 ```sql
+--- Ordino il risultato per data e per fatturato decrescente ---
+SELECT SalesStateID, StateName, SUM(SalesAmount) AS TotalSales, YEAR(OrderDate) AS SalesYear
+FROM SALES as S
+JOIN STATES as ST
+ON S.SalesStateID = ST.StateID
+GROUP BY SalesStateID, StateName, YEAR(OrderDate)
+ORDER BY SalesYear, TotalSales DESC
 ```
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/Query4.png?raw=True)
 
 - Qual è la categoria di articoli maggiormente richiesta dal mercato?
 
 ```sql
+SELECT TOP 1 ProductCategoryName, MAX(TotalRequests) AS MaxRequest
+FROM
+    (	SELECT P.ProductCategoryID, COUNT(*) AS TotalRequests
+		FROM SALES AS S
+		JOIN PRODUCT AS P 
+		ON	S.ProductKey = P.ProductKey
+		GROUP BY P.ProductCategoryID
+	) AS TR
+JOIN PRODUCT_CATEGORY AS C 
+ON TR.ProductCategoryID = C.ProductCategoryID
+GROUP BY ProductCategoryName
+ORDER BY MaxRequest DESC
 ```
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/Query5.png?raw=True)
 
 - Quali sono, se ci sono, i prodotti invenduti?
 
 ```sql
-```
+--- Ho deciso di utilizzare due approcci differenti: il primo tramite SUBQUERY
+SELECT ProductKey, ProductName
+FROM PRODUCT
+WHERE ProductKey NOT IN ( SELECT ProductKey 
+							FROM SALES )
 
-- Esporre l’elenco dei prodotti cona la rispettiva ultima data di vendita
+--- Il secondo tramite LEFT JOIN:
+SELECT P.ProductKey, ProductName
+FROM PRODUCT AS P
+LEFT JOIN SALES AS S
+ON P.ProductKey = S.ProductKey
+WHERE S.ProductKey IS NULL
+```
+Per entrambi i metodi, il risultato è il sequente:
+
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/Query6.png?raw=True)
+
+Se ne deduce che non ci sono prodotti invenduti
+
+- Esporre l’elenco dei prodotti con la rispettiva ultima data di vendita
 
 ```sql
+SELECT P.ProductName,S1.OrderDate, S1.OrderNumber
+FROM SALES AS S1
+JOIN PRODUCT AS P
+ON S1.ProductKey = P.ProductKey
+WHERE S1.OrderDate = (SELECT MAX(S2.OrderDate)
+						FROM SALES AS S2
+						WHERE S1.ProductKey = S2.ProductKey
+						)
+ORDER BY S1.ProductKey
 ```
 
-- Esporre l’elenco dei prodotti cona la rispettiva ultima data di vendita
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/Query7.png?raw=True)
+
+### CREAZIONE DEL REPORT DI ANALISI VENDITE:
+
+Costruzione di un report per l'analisi delle vendite in Excel tramite l'implementazione di un modello logico in PowerQuery.
+
+1)	Costruzione di una vista sui prodotti in modo tale da esporre una “versione denormalizzata” delle informazioni utili (codice prodotto, nome prodotto, nome categoria)
 
 ```sql
+CREATE VIEW VW_SP_Products AS
+SELECT ProductKey,ProductName,ProductCategoryName
+FROM PRODUCT AS P
+JOIN PRODUCT_CATEGORY AS C
+ON P.ProductCategoryID = C.ProductCategoryID
 ```
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/View1.png?raw=True)
+
+2)	Costruzione di una vista per ottenere una “versione denormalizzata” delle informazioni geografiche
+
+```sql
+CREATE VIEW VW_SP_States AS
+SELECT StateID,StateName,RegionArea,RegionMacroArea
+FROM STATES AS S
+JOIN REGIONS AS R
+ON S.RegionID = R.RegionID
+```
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/View2.png?raw=True)
