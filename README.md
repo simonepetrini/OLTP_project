@@ -215,3 +215,51 @@ VALUES
 (00010,2,4,1,196.23,196.23,'2024-01-28',31),
 (00010,3,7,1,209.99,209.99,'2024-01-28',31);
 ```
+Dopo la creazione e l'implementazione del database, il committente richiede di rispondere alla seguenti richieste:
+
+- Fornire una prova della consistenza del DB creato.
+
+```sql
+--- Per dimostrare la consistenza del DB, verifico che i campi definiti come Primary Keys siano univoci ---
+SELECT ProductKey FROM PRODUCT GROUP BY ProductKey HAVING COUNT(*)>1;
+SELECT ProductCategoryID FROM PRODUCT_CATEGORY GROUP BY ProductCategoryID HAVING COUNT(*)>1;
+SELECT RegionID FROM REGIONS GROUP BY RegionID HAVING COUNT(*)>1;
+SELECT OrderNumber,OrderLine FROM SALES GROUP BY OrderNumber,OrderLine HAVING COUNT(*)>1;
+SELECT StateID FROM STATES GROUP BY StateID HAVING COUNT(*)>1;
+```
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/Query1.png?raw=True)
+
+- Esporre l’elenco delle transazioni indicando nel result set il codice documento, la data, il nome del prodotto, la categoria del prodotto, il nome dello stato, il nome della regione di vendita e un campo che indichi che siano passati più di 180 giorni dalla data vendita o meno
+
+```sql
+```
+
+- Esporre l’elenco dei soli prodotti venduti e per ognuno di questi il fatturato totale per anno
+
+```sql
+```
+
+- Esporre il fatturato totale per stato per anno
+
+```sql
+```
+
+- Qual è la categoria di articoli maggiormente richiesta dal mercato?
+
+```sql
+```
+
+- Quali sono, se ci sono, i prodotti invenduti?
+
+```sql
+```
+
+- Esporre l’elenco dei prodotti cona la rispettiva ultima data di vendita
+
+```sql
+```
+
+- Esporre l’elenco dei prodotti cona la rispettiva ultima data di vendita
+
+```sql
+```
