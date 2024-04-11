@@ -352,7 +352,19 @@ ON S.RegionID = R.RegionID
 
 #### 3)	Implementazione del modello logico in PowerQuery
 
-Importo la tabella dei fatti e le due view precedentemente create in PowerQuery
+Importo la tabella dei fatti e le due view precedentemente create 
 
 ![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/PowerQuery1.png?raw=True)
+
+Effettuo le trasformazioni necessarie dei dati in PowerQuery 
+
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/PowerQuery2.png?raw=True)
+
+Creo le relazioni tra le tabelle in PowerPivot (per l'analisi temporale creo una tabella Calendar):
+
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/PowerPivot.png?raw=True)
+
+Il report finale si sviluppa attraverso un'analisi riepilogativa delle vendite totali per singolo prodotto e categoria di prodotto, filtrabili per regione di vendita e su scala temporale
+
+![alt text](https://github.com/simonepetrini/OLTP_project/blob/images/ReportFinale.png?raw=True)
 
