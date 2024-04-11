@@ -40,3 +40,62 @@ In altre parole, progetta opportunamente un numero di tabelle e di relazioni tra
 ![alt text](https://github.com/simonepetrini/OLTP_project/blob/main/Progettazione%20Logica.png?raw=True)
 
 ### IMPLEMENTAZIONE FISICA DELLE TABELLE (TRAMITE IL DBMS SQL SERVER):
+
+```sql
+CREATE DATABASE ToysGroup;
+USE ToysGroup;
+CREATE TABLE REGIONS
+(
+RegionID INT NOT NULL,
+RegionArea nvarchar(30),
+RegionMacroArea nvarchar(30)
+CONSTRAINT PK_REGIONS PRIMARY KEY (RegionID)
+);
+
+CREATE TABLE STATES
+(
+StateID INT NOT NULL,
+StateIntCode char(2),
+StateName nvarchar(50),
+RegionID INT
+CONSTRAINT PK_STATES PRIMARY KEY (StateID),
+CONSTRAINT FK_STATES_REGIONS FOREIGN KEY (RegionID) REFERENCES REGIONS(RegionID)
+);
+
+CREATE TABLE PRODUCT_CATEGORY
+(
+ProductCategoryID INT NOT NULL,
+ProductCategoryName nvarchar(50)
+CONSTRAINT PK_PRODUCT_CATEGORY PRIMARY KEY (ProductCategoryID)
+);
+
+CREATE TABLE PRODUCT
+(
+ProductKey INT NOT NULL,
+ProductName nvarchar(50),
+ProductCategoryID INT,
+ListPrice decimal (10,2),
+StandardCost decimal (10,2),
+Size nvarchar(50),
+Weight decimal(5,1),
+Color nvarchar(50),
+Description nvarchar(200)
+CONSTRAINT PK_PRODUCTS PRIMARY KEY (ProductKey),
+CONSTRAINT FK_PRODUCTS_PRODUCT_CATEGORY FOREIGN KEY (ProductCategoryID) REFERENCES PRODUCT_CATEGORY(ProductCategoryID)
+);
+
+CREATE TABLE SALES
+(
+OrderNumber INT NOT NULL,
+OrderLine tinyint NOT NULL,
+ProductKey INT,
+Quantity INT,
+UnitPrice decimal (10,2),
+SalesAmount decimal (10,2),
+OrderDate date,
+SalesStateID INT
+CONSTRAINT PK_SALES PRIMARY KEY (OrderNumber,OrderLine),
+CONSTRAINT FK_SALES_PRODUCTS FOREIGN KEY (ProductKey) REFERENCES PRODUCT(ProductKey),
+CONSTRAINT FK_SALES_STATES FOREIGN KEY (SalesStateID) REFERENCES STATES(StateID)
+);
+```
