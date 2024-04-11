@@ -29,7 +29,7 @@ Esempio: gli stati ‘France’ e ‘Germany’ sono classificati nella region W
 È necessario progettare e implementare fisicamente un database che modelli lo scenario garantendo l’integrità referenziale e la minimizzazione della ridondanza dei dati.
 In altre parole, progetta opportunamente un numero di tabelle e di relazioni tra queste sufficiente a garantire la consistenza del dato.
 
-### PROGETTAZIONE LOGICA E CONCETTUALE DELLA BASE DATI:
+### PROGETTAZIONE CONCETTUALE E LOGICA DELLA BASE DATI:
 
 #### PROGETTAZIONE CONCETTUALE:
 
@@ -176,6 +176,8 @@ VALUES
 (12, 'Collectable');
 
 --- Tabella PRODUCT ---
+INSERT INTO PRODUCT (ProductKey, ProductName, ProductCategoryID, ListPrice, StandardCost, Size, Weight, Color, Description)
+VALUES
 (1,'Barbie Dreamhouse Playset',1,239.99,190.00,'28.35x69.69x42.91',23.8,'Pink','A comprehensive playset that includes a Barbie doll, furniture, and accessories for creating imaginative scenarios in a dollhouse setting'),
 (2,'LeapFrog LeapStart Interactive Learning System',2,132.74,112.56,'4,75x24,51x28,7',1.48,'White','An educational system that engages children in reading, math, and other subjects through interactive books and activities'),
 (3,'LEGO Creator Expert Taj Mahal',3,505.67,368.15,'58,5x19x49',7.13,'Black','A highly detailed LEGO set that allows kids and adults to build a miniature version of the iconic Taj Mahal'),
